@@ -11,27 +11,27 @@
 
 int main(int argc, char** argv)
 {
-    int    listenfd, connfd;
-    struct sockaddr_in     servaddr;
-    char    buff[4096];
-    int     n;
+    int    listenfd, connfd;//listenfd 是server socket的名  connfd 是连接的名
+    struct sockaddr_in     servaddr;//包含了协议 端口 地址 
+    char    buff[4096];//接收到的数据缓存区
+    int     n;//接收到的字符数
 
-    if( (listenfd = socket(AF_INET, SOCK_STREAM, 0)) == -1 ){
+    if( (listenfd = socket(AF_INET, SOCK_STREAM, 0)) == -1 ){//创建socket
     printf("create socket error: %s(errno: %d)\n",strerror(errno),errno);
     exit(0);
     }
 
-    memset(&servaddr, 0, sizeof(servaddr));
+    memset(&servaddr, 0, sizeof(servaddr));//初始化为0
     servaddr.sin_family = AF_INET;
-    servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
+    servaddr.sin_addr.s_addr = htonl(INADDR_ANY);// 0 0 0 0  其实就是0  当为0的时候 内核随机分配一个ip 如果有两张网卡 就随机二取一
     servaddr.sin_port = htons(6666);
 
-    if( bind(listenfd, (struct sockaddr*)&servaddr, sizeof(servaddr)) == -1){
+    if( bind(listenfd, (struct sockaddr*)&servaddr, sizeof(servaddr)) == -1){//绑定失败就是-1
     printf("bind socket error: %s(errno: %d)\n",strerror(errno),errno);
     exit(0);
     }
 
-    if( listen(listenfd, 10) == -1){
+    if( listen(listenfd, 10) == -1){//监听失败-1
     printf("listen socket error: %s(errno: %d)\n",strerror(errno),errno);
     exit(0);
     }

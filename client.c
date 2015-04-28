@@ -28,7 +28,7 @@ int main(int argc, char** argv)
     memset(&servaddr, 0, sizeof(servaddr));
     servaddr.sin_family = AF_INET;
     servaddr.sin_port = htons(6666);
-    if( inet_pton(AF_INET, argv[1], &servaddr.sin_addr) <= 0){
+    if( inet_pton(AF_INET, argv[1], &servaddr.sin_addr) <= 0){//inet_pton 将 127.0.0.1 转成 二进制整数
     printf("inet_pton error for %s\n",argv[1]);
     exit(0);
     }
@@ -39,7 +39,8 @@ int main(int argc, char** argv)
     }
 
     printf("send msg to server: \n");
-    fgets(sendline, 4096, stdin);
+    scanf("%s",sendline);
+    //fgets(sendline, 4096, stdin);
     if( send(sockfd, sendline, strlen(sendline), 0) < 0)
     {
     printf("send msg error: %s(errno: %d)\n", strerror(errno), errno);
